@@ -2,7 +2,7 @@ import io
 import socket
 import struct
 import cv2 as cv
-import numpy as np
+import pylab as pl
 
 # Start a socket listening for connections on 0.0.0.0:8000 (0.0.0.0 means
 # all interfaces)
@@ -14,6 +14,7 @@ server_socket.listen(0)
 if __name__ == '__main__':
     # Accept a single connection and make a file-like object out of it
     connection = server_socket.accept()[0].makefile('rb')
+    img = None
     try:
         while True:
             # Read the length of the image as a 32-bit unsigned int. If the
@@ -28,9 +29,14 @@ if __name__ == '__main__':
             # Rewind the stream, open it as an image with PIL and do some
             # processing on it
             image_stream.seek(0)
-            file_bytes = np.asarray(bytearray(image_stream.read()), dtype=np.uint8)  # convert to numpy byte-like array
+            file_bytes = pl.asarray(bytearray(image_stream.read()), dtype=pl.uint8)  # convert to numpy byte-like array
             image = cv.imdecode(file_bytes, cv.IMREAD_COLOR)
             print(f'Image is {image.shape[0]}x{image.shape[1]}x{image.shape[2]}')
+            if img is None:
+                img = pl.imshow(image)
+            else:
+                img.set_data(image)
+            pl.draw()
             # image.verify()
             # print('Image is verified')
     finally:

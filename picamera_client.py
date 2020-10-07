@@ -16,13 +16,14 @@ try:
     camera.resolution = (640, 480)
     camera.framerate = 24
     # Start a preview and let the camera warm up for 2 seconds
-    camera.start_preview()
+    # camera.start_preview()
     time.sleep(2)
 
     # Note the start time and construct a stream to hold image data
     # temporarily (we could write it directly to connection but in this
     # case we want to find out the size of each capture first to keep
     # our protocol simple)
+    print("Starting stream")
     start = time.time()
     stream = io.BytesIO()
     for foo in camera.capture_continuous(stream, 'jpeg'):
