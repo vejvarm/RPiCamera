@@ -35,6 +35,7 @@ if __name__ == '__main__':
             image_stream.seek(0)
             file_bytes = pl.asarray(bytearray(image_stream.read()), dtype=pl.uint8)  # convert to numpy byte-like array
             image = cv.imdecode(file_bytes, cv.IMREAD_COLOR)
+            image = cv.cvtColor(image, cv.COLOR_BGR2RGB)
             print(f'Image is {image.shape[0]}x{image.shape[1]}x{image.shape[2]}')
             if img is None:
                 img = pl.imshow(image)

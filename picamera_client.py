@@ -16,8 +16,8 @@ try:
     camera.resolution = (320, 240)
     camera.framerate = 24
     # Start a preview and let the camera warm up for 2 seconds
-    # camera.start_preview()
-    time.sleep(2)
+    camera.start_preview()
+    time.sleep(10)
 
     # Note the start time and construct a stream to hold image data
     # temporarily (we could write it directly to connection but in this
@@ -34,7 +34,7 @@ try:
         # Rewind the stream and send the image data over the wire
         stream.seek(0)
         connection.write(stream.read())
-        # If we've been capturing for more than 30 seconds, quit
+        # If we've been capturing for more than 60 seconds, quit
         if time.time() - start > 60:
             break
         # Reset the stream for the next capture
