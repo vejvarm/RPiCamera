@@ -15,6 +15,10 @@ if __name__ == '__main__':
     # Accept a single connection and make a file-like object out of it
     connection = server_socket.accept()[0].makefile('rb')
     img = None
+    # pl.axis([-50, 50, 0, 10000])
+    pl.ion()
+    pl.show()
+
     try:
         while True:
             # Read the length of the image as a 32-bit unsigned int. If the
@@ -36,9 +40,10 @@ if __name__ == '__main__':
                 img = pl.imshow(image)
             else:
                 img.set_data(image)
-            pl.draw()
+            pl.pause(0.0001)
             # image.verify()
             # print('Image is verified')
     finally:
+        pl.show()
         connection.close()
         server_socket.close()
