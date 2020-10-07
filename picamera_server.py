@@ -2,11 +2,12 @@ import io
 import socket
 import struct
 import cv2 as cv
+import numpy as np
 
 # Start a socket listening for connections on 0.0.0.0:8000 (0.0.0.0 means
 # all interfaces)
 server_socket = socket.socket()
-server_socket.bind(('0.0.0.0', 8000))
+server_socket.bind(('192.168.1.30', 8000))
 server_socket.listen(0)
 
 
@@ -27,10 +28,11 @@ if __name__ == '__main__':
             # Rewind the stream, open it as an image with PIL and do some
             # processing on it
             image_stream.seek(0)
-            image = cv.imread(image_stream)
-            print('Image is %dx%d' % image.size)
-            image.verify()
-            print('Image is verified')
+            file_bytes = np.asarray(bytearray(image_stream.read()), dtype=np.uint8)  # convert to numpy byte-like array
+            image = cv.imdecode(file_bytes, cv.IMREAD_COLOR)
+            print(f'Image is {image.shape[0]}x{image.shape[1]}x{image.shape[2]}')
+            # image.verify()
+            # print('Image is verified')
     finally:
         connection.close()
         server_socket.close()
